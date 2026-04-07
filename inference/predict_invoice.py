@@ -1,23 +1,14 @@
+import os
 import joblib
-import pandas as pd
 
-MODEL_PATH = "D:\\machine_learning_project\\models\\predict_flag_invoice.pkl"
+# Update model path to relative
+model_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "predict_freight_model.pkl")
+model = joblib.load(model_path)
 
-def load_model(model_path: str = MODEL_PATH):
+def predict_freight(input_data: dict):
     """
-    Load trained invoice flagging model.
+    Predict freight using 5 features.
     """
-    with open(model_path, "rb") as f:
-        model = joblib.load(f)
-    return model
-
-
-def predict_invoice_flag(input_data: dict):
-    """
-    Predict invoice flag using 5 features.
-    """
-    model = load_model()
-
     # Convert to DataFrame
     input_df = pd.DataFrame(input_data)
 
@@ -48,5 +39,5 @@ if __name__ == "__main__":
         "total_item_dollars": [950, 4800, 8000]
     }
 
-    prediction = predict_invoice_flag(sample_data)
+    prediction = predict_freight(sample_data)
     print(prediction)
