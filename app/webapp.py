@@ -4,134 +4,142 @@ import numpy as np
 import plotly.express as px
 import sys
 import os
+import joblib
 
 BASE_DIR = os.path.abspath(os.path.join(os.getcwd()))
-sys.path.append(BASE_DIR)
-
+sys.path.append(BASE_DIR)# Model imports
+predict_freight import predict_freight_cost
 # Model imports
 from inference.predict_freight import predict_freight_cost
-from inference.predict_invoice import predict_invoice_flag
+from inference.predict_invoice import predict_invoice_flag# --------------------------------------------
 
-# --------------------------------------------
+# ----------------------------------------------------------------------
 # Page Configuration
-# --------------------------------------------
+# --------------------------------------------dor Invoice Intelligence Portal",
 st.set_page_config(
     page_title="Vendor Invoice Intelligence Portal",
     page_icon="📦",
     layout="wide"
-)
+)# --------------------------------------------
 
-# --------------------------------------------
-# Header
-# --------------------------------------------
+# ----------------------------------------------------------------------------------
+# Headerl")
+# -------------------------------------------- Invoice Risk Flagging")
 st.title("📦 Vendor Invoice Intelligence Portal")
-st.subheader("AI-Driven Freight Cost Prediction & Invoice Risk Flagging")
-
-st.markdown("""
-This portal helps:
-- Predict freight cost 📊  
+st.subheader("AI-Driven Freight Cost Prediction & Invoice Risk Flagging")st.markdown("""
+ps:
+st.markdown("""cost 📊  
+This portal helps: 
+- Predict freight cost 📊   ⚡  
 - Detect risky invoices 🚨  
 - Improve finance operations ⚡  
-""")
+""")st.divider()
 
-st.divider()
+st.divider()# --------------------------------------------
 
-# --------------------------------------------
+# ---------------------------------------------------------------------------------
 # Sidebar
 # --------------------------------------------
-st.sidebar.title("🔍 Model Selection")
+st.sidebar.title("🔍 Model Selection")selected_model = st.sidebar.radio(
 
 selected_model = st.sidebar.radio(
-    "Choose Prediction Module",
-    [
+    "Choose Prediction Module",   "Freight Cost Prediction",
+    [lag"
         "Freight Cost Prediction",
         "Invoice Manual Approval Flag"
     ]
-)
+)# ✅ Business Impact (FIXED)
 
 # ✅ Business Impact (FIXED)
-st.sidebar.markdown("""
----
-### 📊 Business Impact
+st.sidebar.markdown(""" 📊 Business Impact
+---asting  
+### 📊 Business Impactmalies  
 📈 Improved cost forecasting  
 🛑 Reduced invoice fraud & anomalies  
 ⚡ Faster finance operations  
-""")
+""")# ============================================
 
+# ==============================================================
+# 🚚 Freight Cost Prediction:
 # ============================================
-# 🚚 Freight Cost Prediction
-# ============================================
-if selected_model == "Freight Cost Prediction":
+if selected_model == "Freight Cost Prediction":    st.subheader("🚚 Freight Cost Prediction")
 
-    st.subheader("🚚 Freight Cost Prediction")
+    st.subheader("🚚 Freight Cost Prediction")    # ✅ Objective (FIXED)
 
-    # ✅ Objective (FIXED)
-    st.markdown("""
+    # ✅ Objective (FIXED) 
+    st.markdown("""cost using invoice dollar value to support  
     **Objective:**  
     Predict freight cost using invoice dollar value to support  
     budgeting, cost optimization, and vendor negotiation.
-    """)
+    """)    with st.form("freight_form"):
 
-    with st.form("freight_form"):
+    model_path = r"D:\machine_learning_project\models\predict_freight_model.pkl"        dollars = st.number_input(
+    # or use relative path:
+    model_path = os.path.join(BASE_DIR, "models", "predict_freight_model.pkl")
 
-        dollars = st.number_input(
-            "💰 Invoice Dollars",
+    # Load model
+    with open(model_path, 'rb') as f:
+        model = joblib.load(f)        submit_freight = st.form_submit_button("🔮 Predict Freight Cost")
+
+    with st.form("freight_form"):    if submit_freight:
+
+        dollars = st.number_input(input_data = {
+            "💰 Invoice Dollars", [dollars]
             min_value=1.0,
             value=18500.0
-        )
+        )            prediction = predict_freight_cost(input_data)['Predicted_Freight']
 
-        submit_freight = st.form_submit_button("🔮 Predict Freight Cost")
+        submit_freight = st.form_submit_button("🔮 Predict Freight Cost")            st.success("Prediction completed successfully")
 
-    if submit_freight:
-        try:
+    if submit_freight:            st.metric(
+        try:"📊 Estimated Freight Cost",
             input_data = {
                 "Dollars": [dollars]
             }
-
-            prediction = predict_freight_cost(input_data)['Predicted_Freight']
-
-            st.success("Prediction completed successfully")
-
-            st.metric(
-                label="📊 Estimated Freight Cost",
-                value=f"${prediction[0]:,.2f}"
-            )
-
         except Exception as e:
-            st.error(f"Error: {e}")
+            prediction = predict_freight_cost(input_data)['Predicted_Freight']{e}")
 
+            st.success("Prediction completed successfully")# ============================================
+
+            st.metric(==================
+                label="📊 Estimated Freight Cost",l Flag":
+                value=f"${prediction[0]:,.2f}"
+            )    st.subheader("🧾 Invoice Risk Prediction")
+
+        except Exception as e:    st.markdown("""
+            st.error(f"Error: {e}") 
+s that require manual approval using ML-based risk detection.
 # ============================================
 # 🧾 Invoice Risk Prediction
-# ============================================
+# ============================================    with st.form("invoice_form"):
 elif selected_model == "Invoice Manual Approval Flag":
-
-    st.subheader("🧾 Invoice Risk Prediction")
-
-    st.markdown("""
-    **Objective:**  
-    Identify invoices that require manual approval using ML-based risk detection.
-    """)
-
-    with st.form("invoice_form"):
-
         invoice_quantity = st.number_input("Invoice Quantity", min_value=1, value=100)
-        invoice_dollars = st.number_input("Invoice Dollars", min_value=1.0, value=2000.0)
+    st.subheader("🧾 Invoice Risk Prediction").0)
+
+    st.markdown("""_value=1, value=150)
+    **Objective:**  .0)
+    Identify invoices that require manual approval using ML-based risk detection.
+    """)        submit_flag = st.form_submit_button("🧠 Evaluate Invoice Risk")
+
+    with st.form("invoice_form"):    if submit_flag:
+
+        invoice_quantity = st.number_input("Invoice Quantity", min_value=1, value=100)input_data = {
+        invoice_dollars = st.number_input("Invoice Dollars", min_value=1.0, value=2000.0)uantity": [invoice_quantity],
         freight = st.number_input("Freight", min_value=1.0, value=500.0)
         total_item_quantity = st.number_input("Total Item Quantity", min_value=1, value=150)
-        total_item_dollars = st.number_input("Total Item Dollars", min_value=1.0, value=2476.0)
+        total_item_dollars = st.number_input("Total Item Dollars", min_value=1.0, value=2476.0): [total_item_quantity],
 
         submit_flag = st.form_submit_button("🧠 Evaluate Invoice Risk")
 
-    if submit_flag:
+    if submit_flag:            flag_prediction = predict_invoice_flag(input_data)['Predicted_Flag']
         try:
-            input_data = {
-                "invoice_quantity": [invoice_quantity],
+            input_data = {            if bool(flag_prediction[0]):
+                "invoice_quantity": [invoice_quantity],oval Required")
                 "invoice_dollars": [invoice_dollars],
-                "Freight": [freight],
+                "Freight": [freight],t.success("✅ Safe for Auto-Approval")
                 "total_item_quantity": [total_item_quantity],
-                "total_item_dollars": [total_item_dollars]
-            }
-
+                "total_item_dollars": [total_item_dollars]        except Exception as e:
+            }{e}")
             flag_prediction = predict_invoice_flag(input_data)['Predicted_Flag']
 
             if bool(flag_prediction[0]):
