@@ -19,7 +19,7 @@ pip-wheel-metadata/
 data/
 *.csv
 *.parquet
-*.joblib
+# *.joblib
 
 # Streamlit
 .streamlit/
