@@ -5,7 +5,7 @@ import streamlit as st
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
-MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "predict_freight_model.pkl")  # Adjust filename if needed
+MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "predict_flag_invoice.pkl")  # Adjust filename if needed
 
 def load_model(model_path: str = MODEL_PATH):
     """
