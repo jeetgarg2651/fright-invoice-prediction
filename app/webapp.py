@@ -60,7 +60,7 @@ if selected_model == "Freight Cost Prediction":
     budgeting, cost optimization, and vendor negotiation.
     """)
     
-    model_path = os.path.join("models/predict_freight_model.pkl")
+    model_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "predict_freight_model.pkl")
     
     if not os.path.exists(model_path):
         st.error(f"Model file not found at: {model_path}")
