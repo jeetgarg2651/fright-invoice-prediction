@@ -1,9 +1,20 @@
 import os
 import joblib
+import pandas as pd
 
-# Update model path to relative
-model_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "predict_freight_model.pkl")
-model = joblib.load(model_path)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "predict_freight_model.pkl")  # Adjust filename if needed
+
+def load_model(model_path: str = MODEL_PATH):
+    """
+    Load trained invoice flag prediction model.
+    """
+    with open(model_path, "rb") as f:
+        model = joblib.load(f)
+    return model
+
+model = load_model()
 
 def predict_freight(input_data: dict):
     """
