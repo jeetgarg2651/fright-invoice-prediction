@@ -16,7 +16,7 @@ pip-wheel-metadata/
 .idea/
 
 # Data files and folders
-# data/
+data/
 *.csv
 *.parquet
 *.joblib
