@@ -6,12 +6,14 @@ import sys
 import os
 import joblib
 
-BASE_DIR = os.path.abspath(os.path.join(os.getcwd()))
-sys.path.append(BASE_DIR)# Model imports
-predict_freight import predict_freight_cost
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(BASE_DIR))
+
 # Model imports
 from inference.predict_freight import predict_freight_cost
-from inference.predict_invoice import predict_invoice_flag# --------------------------------------------
+from inference.predict_invoice import predict_invoice_flag
+
+# --------------------------------------------
 
 # ----------------------------------------------------------------------
 # Page Configuration
@@ -71,45 +73,38 @@ if selected_model == "Freight Cost Prediction":    st.subheader("🚚 Freight Co
     **Objective:**  
     Predict freight cost using invoice dollar value to support  
     budgeting, cost optimization, and vendor negotiation.
-    """)    with st.form("freight_form"):
-
-    model_path = r"D:\machine_learning_project\models\predict_freight_model.pkl"        dollars = st.number_input(
-    # or use relative path:
-    model_path = os.path.join(BASE_DIR, "models", "predict_freight_model.pkl")
-
-    # Load model
-    with open(model_path, 'rb') as f:
-        model = joblib.load(f)        submit_freight = st.form_submit_button("🔮 Predict Freight Cost")
+    """)    # Load model with relative path
+    model_path = os.path.join(os.path.dirname(BASE_DIR), "models", "predict_freight_model.pkl")
+    
+    if not os.path.exists(model_path):
+        st.error(f"Model file not found at: {model_path}")
+    else:
+        with open(model_path, 'rb') as f:
+            model = joblib.load(f)
 
     with st.form("freight_form"):    if submit_freight:
 
-        dollars = st.number_input(input_data = {
-            "💰 Invoice Dollars", [dollars]
+        dollars = st.number_input(
+            "💰 Invoice Dollars",
             min_value=1.0,
             value=18500.0
-        )            prediction = predict_freight_cost(input_data)['Predicted_Freight']
+        )
+        submit_freight = st.form_submit_button("🔮 Predict Freight Cost")
 
-        submit_freight = st.form_submit_button("🔮 Predict Freight Cost")            st.success("Prediction completed successfully")
-
-    if submit_freight:            st.metric(
-        try:"📊 Estimated Freight Cost",
-            input_data = {
-                "Dollars": [dollars]
-            }
-        except Exception as e:
-            prediction = predict_freight_cost(input_data)['Predicted_Freight']{e}")
-
-            st.success("Prediction completed successfully")# ============================================
-
-            st.metric(==================
-                label="📊 Estimated Freight Cost",l Flag":
+    if submit_freight:
+        try:
+            input_data = {"Dollars": [dollars]}
+            prediction = predict_freight_cost(input_data)['Predicted_Freight']
+            st.success("Prediction completed successfully")
+            st.metric(
+                label="📊 Estimated Freight Cost",
                 value=f"${prediction[0]:,.2f}"
-            )    st.subheader("🧾 Invoice Risk Prediction")
+            )
+        except Exception as e:
+            st.error(f"Error: {e}")
 
-        except Exception as e:    st.markdown("""
-            st.error(f"Error: {e}") 
-s that require manual approval using ML-based risk detection.
 # ============================================
+
 # 🧾 Invoice Risk Prediction
 # ============================================    with st.form("invoice_form"):
 elif selected_model == "Invoice Manual Approval Flag":
@@ -123,29 +118,28 @@ elif selected_model == "Invoice Manual Approval Flag":
 
     with st.form("invoice_form"):    if submit_flag:
 
-        invoice_quantity = st.number_input("Invoice Quantity", min_value=1, value=100)input_data = {
-        invoice_dollars = st.number_input("Invoice Dollars", min_value=1.0, value=2000.0)uantity": [invoice_quantity],
+        invoice_quantity = st.number_input("Invoice Quantity", min_value=1, value=100)
+        invoice_dollars = st.number_input("Invoice Dollars", min_value=1.0, value=2000.0)
         freight = st.number_input("Freight", min_value=1.0, value=500.0)
         total_item_quantity = st.number_input("Total Item Quantity", min_value=1, value=150)
-        total_item_dollars = st.number_input("Total Item Dollars", min_value=1.0, value=2476.0): [total_item_quantity],
+        total_item_dollars = st.number_input("Total Item Dollars", min_value=1.0, value=2476.0)
+
+        input_data = {
+            "invoice_quantity": [invoice_quantity],
+            "invoice_dollars": [invoice_dollars],
+            "Freight": [freight],
+            "total_item_quantity": [total_item_quantity],
+            "total_item_dollars": [total_item_dollars]
+        }
 
         submit_flag = st.form_submit_button("🧠 Evaluate Invoice Risk")
 
-    if submit_flag:            flag_prediction = predict_invoice_flag(input_data)['Predicted_Flag']
+    if submit_flag:
         try:
-            input_data = {            if bool(flag_prediction[0]):
-                "invoice_quantity": [invoice_quantity],oval Required")
-                "invoice_dollars": [invoice_dollars],
-                "Freight": [freight],t.success("✅ Safe for Auto-Approval")
-                "total_item_quantity": [total_item_quantity],
-                "total_item_dollars": [total_item_dollars]        except Exception as e:
-            }{e}")
             flag_prediction = predict_invoice_flag(input_data)['Predicted_Flag']
-
             if bool(flag_prediction[0]):
                 st.error("🚨 Manual Approval Required")
             else:
                 st.success("✅ Safe for Auto-Approval")
-
         except Exception as e:
             st.error(f"Error: {e}")
