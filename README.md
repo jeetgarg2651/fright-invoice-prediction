@@ -70,7 +70,10 @@ Typical features include:
 * Linear Regression
 * Decision Tree Regressor
 * ✅ Random Forest Regressor (Final Model)
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/da50af18-fac0-4de6-989d-1ecebbfed595" />
+
+* <img width="580" height="455" alt="image" src="https://github.com/user-attachments/assets/c73eac24-1b64-4610-9b66-530f5c3f76af" />
+
+
 
 ---
 
@@ -79,6 +82,10 @@ Typical features include:
 * Logistic Regression
 * Decision Tree Classifier
 * ✅ Random Forest Classifier (Final Model)
+
+* heatmap
+<img width="1570" height="946" alt="image" src="https://github.com/user-attachments/assets/55bac25a-7ac0-4dfd-a47c-1adc8974112f" />
+
 
 ---
 
@@ -107,6 +114,8 @@ A Streamlit-based web app that allows users to:
 * Predict freight cost instantly
 * Detect risky invoices
 * View results in real-time
+
+* <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/da50af18-fac0-4de6-989d-1ecebbfed595" />
 
 
 
@@ -179,6 +188,7 @@ streamlit run app/webapp.py
 ## 👨‍💻 Author
 
 NAME - JEET GARG
+
 LINKDIN ID - https://www.linkedin.com/in/jeet-garg-49b9a2290?utm_source=share_via&utm_content=profile&utm_medium=member_ios
 
 Built to make invoice processing **smarter, faster, and more reliable** using Machine Learning.
