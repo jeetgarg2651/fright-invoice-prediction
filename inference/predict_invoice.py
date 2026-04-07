@@ -1,6 +1,7 @@
 import os
 import joblib
 import pandas as pd
+import streamlit as st
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
@@ -52,3 +53,5 @@ if __name__ == "__main__":
 
     prediction = predict_freight(sample_data)
     print(prediction)
+
+st.markdown("""cost (chart)""")
