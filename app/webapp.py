@@ -7,7 +7,7 @@ import os
 import joblib
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(BASE_DIR))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Model imports
 from inference.predict_freight import predict_freight_cost
